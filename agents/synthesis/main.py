@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 app = FastAPI()
-llm = Groq(api_key=os.getenv("GROQ_API_KEY"))
+GROQ_KEY = os.getenv("GROQ_API_KEY")
+llm = Groq(api_key=GROQ_KEY) if GROQ_KEY else None
 
 class SynthesisTask(BaseModel):
     task_id: str
@@ -18,7 +19,7 @@ class SynthesisTask(BaseModel):
 @app.post("/run")
 async def run(task: SynthesisTask):
     chat = llm.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         messages=[
             {"role": "system", "content": """You are a senior grant strategy director.
 Synthesize the final funding brief and write an optimized proposal outline. Return JSON with:
