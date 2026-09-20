@@ -1,0 +1,4 @@
+.agent/
+.zip
+.env
+.venv/
